@@ -220,7 +220,7 @@ static int __init Arc64_init( void )
 	ArcPrintf( "INIT - |     v 3.6                          |\n" );
 	ArcPrintf( "INIT - +------------------------------------+\n" );
 
-	if ( !IS_ERR_VALUE( &dResult ) )
+	if ( !IS_ERR_VALUE( ( unsigned long )dResult ) )
 	{
 		/* Allocate a single dynamically allocated char device major
 		  +--------------------------------------------------------+ */
@@ -251,7 +251,7 @@ static int __init Arc64_init( void )
 
 	/*  Create the driver class
 	   +---------------------------------------------+ */
-	if ( !IS_ERR_VALUE( &dResult ) )
+	if ( !IS_ERR_VALUE( ( unsigned long )dResult ) )
 	{
 		g_pArc64Class = class_create( THIS_MODULE, DEVICE_NAME );
 
@@ -265,7 +265,7 @@ static int __init Arc64_init( void )
 
 	/*  Register the PCI driver
 	   +---------------------------------------------+ */
-	if ( !IS_ERR_VALUE( &dResult ) )
+	if ( !IS_ERR_VALUE( ( unsigned long )dResult ) )
 	{
 		dResult = pci_register_driver( &Arc64_driver );
 
@@ -365,7 +365,7 @@ static int Arc64_probe( struct pci_dev* dev, const struct pci_device_id* id )
 		dResult = -ENOMEM;
 	}
 
-	if ( !IS_ERR_VALUE( &dResult ) )
+	if ( !IS_ERR_VALUE( ( unsigned long )dResult ) )
 	{
 		ArcPrintf( "PROBE - Looking for ARC-64 ( Gen III ) boards ...\n" );
 
@@ -382,7 +382,7 @@ static int Arc64_probe( struct pci_dev* dev, const struct pci_device_id* id )
 		}
 	}
 
-	if ( !IS_ERR_VALUE( &dResult ) )
+	if ( !IS_ERR_VALUE( ( unsigned long )dResult ) )
 	{
 		/* Save the device reference in the device extension
 		  +----------------------------------------------------+ */
@@ -404,7 +404,7 @@ static int Arc64_probe( struct pci_dev* dev, const struct pci_device_id* id )
 		  +----------------------------------------------------+ */
 		dResult = pci_enable_device( dev );
 
-		if ( IS_ERR_VALUE( &dResult ) )
+		if ( IS_ERR_VALUE( ( unsigned long )dResult ) )
 		{
 			ArcPrintf( "PROBE - Failed to enable device!\n" );
 		}
@@ -412,7 +412,7 @@ static int Arc64_probe( struct pci_dev* dev, const struct pci_device_id* id )
 
 	/* Request all PCI I/O regions associated with the device
 	  +------------------------------------------------------+ */
-	if ( !IS_ERR_VALUE( &dResult ) )
+	if ( !IS_ERR_VALUE( ( unsigned long )dResult ) )
 	{
 		dResult = pci_request_regions( dev, DEVICE_NAME );
 
@@ -424,7 +424,7 @@ static int Arc64_probe( struct pci_dev* dev, const struct pci_device_id* id )
 
 	/* Map BARs
 	  +------------------------------------------------------+ */
-	if ( !IS_ERR_VALUE( &dResult ) )
+	if ( !IS_ERR_VALUE( ( unsigned long )dResult ) )
 	{
 		dResult = Arc64_mapBars( pDevExt, dev );
 
@@ -436,7 +436,7 @@ static int Arc64_probe( struct pci_dev* dev, const struct pci_device_id* id )
 
 	/* Initialize character device
 	  +----------------------------------------------------------+ */
-	if ( !IS_ERR_VALUE( &dResult ) )
+	if ( !IS_ERR_VALUE( ( unsigned long )dResult ) )
 	{
 		dResult = Arc64_cdevInit( pDevExt );
 
@@ -448,7 +448,7 @@ static int Arc64_probe( struct pci_dev* dev, const struct pci_device_id* id )
 
 	/* Request ISQ
 	  +----------------------------------------------------------+ */
-	if ( !IS_ERR_VALUE( &dResult ) )
+	if ( !IS_ERR_VALUE( ( unsigned long )dResult ) )
 	{
 		// Install the interrupt service routine. The pci_dev structure
 		// that's passed in already contains the IRQ read from the PCI
@@ -462,7 +462,7 @@ static int Arc64_probe( struct pci_dev* dev, const struct pci_device_id* id )
 						       pDevExt->szName,
 						       pDevExt );
 
-		if ( !IS_ERR_VALUE( &dResult ) )
+		if ( !IS_ERR_VALUE( ( unsigned long )dResult ) )
 		{
 			pDevExt->dHasIRQ = 1;
 		}
@@ -475,7 +475,7 @@ static int Arc64_probe( struct pci_dev* dev, const struct pci_device_id* id )
 
 	/* Create the device in /dev
 	  +----------------------------------------------------------+ */
-	if ( !IS_ERR_VALUE( &dResult ) )
+	if ( !IS_ERR_VALUE( ( unsigned long )dResult ) )
 	{
 		#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,32)
 		pDevExt->pDevice = device_create( g_pArc64Class,
@@ -503,7 +503,7 @@ static int Arc64_probe( struct pci_dev* dev, const struct pci_device_id* id )
 
 	/*  Undo everything if we failed
 	   +----------------------------------------------------------+ */
-	if ( IS_ERR_VALUE( &dResult ) )
+	if ( IS_ERR_VALUE( ( unsigned long )dResult ) )
 	{
 		if ( pDevExt->dHasIRQ )
 		{
@@ -636,15 +636,14 @@ static int Arc64_open( struct inode* inode, struct file* filp )
 
 	/* Allow only one process to open the device at a time
 	  +----------------------------------------------------------+ */
-	if ( !IS_ERR_VALUE( &dResult ) && pDevExt->dOpen )
+	if ( !IS_ERR_VALUE( ( unsigned long )dResult ) && pDevExt->dOpen )
 	{
-		ArcPrintf( "OPEN - Device %d already opened!\n",
-					MINOR( pDevExt->tCDevno ) );
+		ArcPrintf( "OPEN - Device %d already opened!\n", MINOR( pDevExt->tCDevno ) );
 
 		dResult = -EBUSY;
 	}
 
-	if ( !IS_ERR_VALUE( &dResult ) )
+	if ( !IS_ERR_VALUE( ( unsigned long )dResult ) )
 	{
 		/* Increase the module usage count. Prevents accidental
 		   unloading of the device while it's in use.
@@ -740,7 +739,7 @@ static int Arc64_close( struct inode* inode, struct file* filp )
 		dResult = -ENODEV;
 	}
 
-	if ( !IS_ERR_VALUE( &dResult ) && pDevExt->dOpen )
+	if ( !IS_ERR_VALUE( ( unsigned long )dResult ) && pDevExt->dOpen )
 	{
 		spin_lock( &g_tArc64Lock );
 
@@ -819,7 +818,7 @@ static long Arc64_ioctl( struct file* filp, unsigned int cmd, unsigned long arg 
 		}
 	}
 
-	if ( !IS_ERR_VALUE( &dResult ) )
+	if ( !IS_ERR_VALUE( ( unsigned long )dResult ) )
 	{
 		dCtrlCode = EXCMD( cmd );
 
@@ -886,10 +885,9 @@ static long Arc64_ioctl( struct file* filp, unsigned int cmd, unsigned long arg 
 					}
 				}
 
-				if ( !IS_ERR_VALUE( &dResult ) )
+				if ( !IS_ERR_VALUE( ( unsigned long )dResult ) )
 				{
-       		       	dResult =
-       		       		put_user( u32Progress, ( uint32_t * )arg );
+       		       	       		dResult = put_user( u32Progress, ( uint32_t * )arg );
 				}
 			}
 			break;
@@ -903,7 +901,7 @@ static long Arc64_ioctl( struct file* filp, unsigned int cmd, unsigned long arg 
 			{
 				uint32_t u32Value = Arc64_readHSTR( pDevExt );
 
-				dResult = put_user( u32Value, ( uint32_t * )arg );
+	       	       		dResult = put_user( u32Value, ( uint32_t * )arg );
 			}
 			break;
 
@@ -916,7 +914,7 @@ static long Arc64_ioctl( struct file* filp, unsigned int cmd, unsigned long arg 
 			{
 				uint64_t ulDmaAddr = pDevExt->ulCommonBufferPA;
 
-				dResult = put_user( ulDmaAddr, ( uint64_t * ) arg );
+	       	       		dResult = put_user( ulDmaAddr, ( uint64_t * )arg );
 			}
 			break;
 
@@ -929,7 +927,7 @@ static long Arc64_ioctl( struct file* filp, unsigned int cmd, unsigned long arg 
 			{
 				uint64_t ulBufSize = pDevExt->ulCommonBufferSize;
 
-				dResult = put_user( ulBufSize, ( uint64_t * )arg );
+	       	       		dResult = put_user( ulBufSize, ( uint64_t * )arg );
 			}
 			break;
 
@@ -944,7 +942,7 @@ static long Arc64_ioctl( struct file* filp, unsigned int cmd, unsigned long arg 
 
 				dResult = get_user( u32Value, ( uint32_t * ) arg );
 
-				if ( !IS_ERR_VALUE( &dResult ) )
+				if ( !IS_ERR_VALUE( ( unsigned long )dResult ) )
 				{
 					Arc64_writeHCTR( pDevExt, u32Value );
 				}
@@ -963,7 +961,7 @@ static long Arc64_ioctl( struct file* filp, unsigned int cmd, unsigned long arg 
 
 				dResult = get_user( u32Value, ( uint32_t * ) arg );
 
-				if ( !IS_ERR_VALUE( &dResult ) )
+				if ( !IS_ERR_VALUE( ( unsigned long )dResult ) )
 				{
 					/* Clear the status bits if command not ABORT_READOUT.
 					   The pci board can't handle maskable commands
@@ -1016,7 +1014,7 @@ static long Arc64_ioctl( struct file* filp, unsigned int cmd, unsigned long arg 
 
 				dResult = get_user( u32Param, ( uint32_t * ) arg );
 
-				if ( !IS_ERR_VALUE( &dResult ) )
+				if ( !IS_ERR_VALUE( ( unsigned long )dResult ) )
 				{
 					if ( Arc64_checkDspInputFifo( pDevExt ) )
 					{
@@ -1039,9 +1037,7 @@ static long Arc64_ioctl( struct file* filp, unsigned int cmd, unsigned long arg 
 				int      dParamCount			= 0;
 				int      i						= 0;
 
-        		dResult = copy_from_user( u32CmdData, ( uint32_t * )arg, ( CMD_MAX * sizeof( uint32_t ) ) );
-
-				if ( !IS_ERR_VALUE( &dResult ) )
+  				if ( copy_from_user( u32CmdData, ( uint32_t * )arg, ( CMD_MAX * sizeof( uint32_t ) ) ) == 0 )
 				{
 					/* Check that the command isn't maskable and that
 					   we're currently not in readout.
@@ -1055,14 +1051,14 @@ static long Arc64_ioctl( struct file* filp, unsigned int cmd, unsigned long arg 
 
 					/* Clear the status bits
 					  +-----------------------------------------------------+ */
-					if ( !IS_ERR_VALUE( &dResult ) )
+					if ( !IS_ERR_VALUE( ( unsigned long )dResult ) )
 					{
 						dResult = Arc64_writeHCVR( pDevExt, CLEAR_REPLY_FLAGS );
 					}
 
 					/* Wait for the FIFO to be empty.
 					  +-----------------------------------------------------+ */
-					if ( !IS_ERR_VALUE( &dResult ) )
+					if ( !IS_ERR_VALUE( ( unsigned long )dResult ) )
 					{
 						if ( !Arc64_checkDspInputFifo( pDevExt ) )
 						{
@@ -1070,7 +1066,7 @@ static long Arc64_ioctl( struct file* filp, unsigned int cmd, unsigned long arg 
 						}
 					}
 
-					if ( !IS_ERR_VALUE( &dResult ) )
+					if ( !IS_ERR_VALUE( ( unsigned long )dResult ) )
 					{
 						/* Get the number of command parameters
 						  +-------------------------------------------------------+ */
@@ -1097,7 +1093,7 @@ static long Arc64_ioctl( struct file* filp, unsigned int cmd, unsigned long arg 
 						}
 					}
 
-					if ( !IS_ERR_VALUE( &dResult ) )
+					if ( !IS_ERR_VALUE( ( unsigned long )dResult ) )
 					{
 						// Set the reply
 						u32Reply =  Arc64_checkReplyFlags( pDevExt );
@@ -1110,7 +1106,7 @@ static long Arc64_ioctl( struct file* filp, unsigned int cmd, unsigned long arg 
 							// Go read some data
 							dResult = Arc64_writeHCVR( pDevExt, READ_REPLY_VALUE );
 
-							if ( !IS_ERR_VALUE( &dResult ) )
+							if ( !IS_ERR_VALUE( ( unsigned long )dResult ) )
 							{
 								if ( Arc64_checkDspOutputFifo( pDevExt ) )
 								{
@@ -1146,8 +1142,7 @@ static long Arc64_ioctl( struct file* filp, unsigned int cmd, unsigned long arg 
 				/* This vector command is here because it
 				   expects NO reply.
 				  +-----------------------------------------+ */
-				dResult =
-						Arc64_writeHCVR( pDevExt, PCI_DOWNLOAD );
+				dResult = Arc64_writeHCVR( pDevExt, PCI_DOWNLOAD );
 			}
 			break;
 
@@ -1160,10 +1155,7 @@ static long Arc64_ioctl( struct file* filp, unsigned int cmd, unsigned long arg 
 			{
 				uint32_t u32Reply = Arc64_checkReplyFlags( pDevExt );
 
-				if ( put_user( u32Reply, ( uint32_t * )arg ) )
-				{
-					dResult = -EFAULT;
-				}
+				dResult = put_user( u32Reply, ( uint32_t * )arg );
 			}
 			break;
 
@@ -1179,12 +1171,12 @@ static long Arc64_ioctl( struct file* filp, unsigned int cmd, unsigned long arg 
 
         		dResult = get_user( u32CfgReg, ( uint32_t * )arg );
 
-				if ( !IS_ERR_VALUE( &dResult ) )
+				if ( !IS_ERR_VALUE( ( unsigned long )dResult ) )
 				{
 					dResult = pci_read_config_byte( pDevExt->pPCIDev, u32CfgReg, &u8Value );
 				}
 
-				if ( !IS_ERR_VALUE( &dResult ) )
+				if ( !IS_ERR_VALUE( ( unsigned long )dResult ) )
 				{
 					dResult = put_user( ( uint32_t )u8Value, ( uint32_t * )arg );
 				}
@@ -1203,14 +1195,12 @@ static long Arc64_ioctl( struct file* filp, unsigned int cmd, unsigned long arg 
 
         		dResult = get_user( u32CfgReg, ( uint32_t * )arg );
 
-				if ( !IS_ERR_VALUE( &dResult ) )
+				if ( !IS_ERR_VALUE( ( unsigned long )dResult ) )
 				{
-					dResult = pci_read_config_word( pDevExt->pPCIDev,
-													u32CfgReg,
-													&u16Value );
+					dResult = pci_read_config_word( pDevExt->pPCIDev, u32CfgReg, &u16Value );
 				}
 
-				if ( !IS_ERR_VALUE( &dResult ) )
+				if ( !IS_ERR_VALUE( ( unsigned long )dResult ) )
 				{
 					dResult = put_user( ( uint32_t )u16Value,
 									    ( uint32_t * )arg );
@@ -1230,7 +1220,7 @@ static long Arc64_ioctl( struct file* filp, unsigned int cmd, unsigned long arg 
 
         		dResult = get_user( u32CfgReg, ( uint32_t * )arg );
 
-				if ( !IS_ERR_VALUE( &dResult ) )
+				if ( !IS_ERR_VALUE( ( unsigned long )dResult ) )
 				{
 					dResult =
 						pci_read_config_dword( pDevExt->pPCIDev,
@@ -1238,7 +1228,7 @@ static long Arc64_ioctl( struct file* filp, unsigned int cmd, unsigned long arg 
 											   &u32Value );
 				}
 
-				if ( !IS_ERR_VALUE( &dResult ) )
+				if ( !IS_ERR_VALUE( ( unsigned long )dResult ) )
 				{
 					dResult = put_user( ( uint32_t )u32Value,
 									    ( uint32_t * )arg );
@@ -1255,13 +1245,16 @@ static long Arc64_ioctl( struct file* filp, unsigned int cmd, unsigned long arg 
 			{
 				uint32_t u32Params[ 2 ] = { 0, 0 };
 
-				dResult = copy_from_user( u32Params, ( uint32_t * )arg, ( 2 * sizeof( uint32_t ) ) );
-
-				if ( !IS_ERR_VALUE( &dResult ) )
+				if ( copy_from_user( u32Params, ( uint32_t * )arg, ( 2 * sizeof( uint32_t ) ) ) == 0 )
 				{
 					dResult = pci_write_config_byte( pDevExt->pPCIDev,
 													 u32Params[ CFG_OFFSET ],
 													 ( uint8_t )u32Params[ CFG_VALUE ] );
+				}
+
+				else
+				{
+					dResult = -EFAULT;
 				}
 			}
 			break;
@@ -1275,13 +1268,16 @@ static long Arc64_ioctl( struct file* filp, unsigned int cmd, unsigned long arg 
 			{
 				uint32_t u32Params[ 2 ] = { 0, 0 };
 
-				dResult = copy_from_user( u32Params, ( uint32_t * )arg, ( 2 * sizeof( uint32_t ) ) );
-
-				if ( !IS_ERR_VALUE( &dResult ) )
+				if ( copy_from_user( u32Params, ( uint32_t * )arg, ( 2 * sizeof( uint32_t ) ) ) == 0 )
 				{
 					dResult = pci_write_config_word( pDevExt->pPCIDev,
 													 u32Params[ CFG_OFFSET ],
 													 ( uint16_t )u32Params[ CFG_VALUE ] );
+				}
+				
+				else
+				{
+					dResult = -EFAULT;
 				}
 			}
 			break;
@@ -1295,13 +1291,16 @@ static long Arc64_ioctl( struct file* filp, unsigned int cmd, unsigned long arg 
 			{
 				uint32_t u32Params[ 2 ] = { 0, 0 };
 
-				dResult = copy_from_user( u32Params, ( uint32_t * )arg, ( 2 * sizeof( uint32_t ) ) );
-
-				if ( !IS_ERR_VALUE( &dResult ) )
+				if ( copy_from_user( u32Params, ( uint32_t * )arg, ( 2 * sizeof( uint32_t ) ) ) == 0 )
 				{
 					dResult = pci_write_config_dword( pDevExt->pPCIDev,
 													  u32Params[ CFG_OFFSET ],
 													  u32Params[ CFG_VALUE ] );
+				}
+
+				else
+				{
+					dResult = -EFAULT;
 				}
 			}
 			break;
@@ -1432,7 +1431,7 @@ static int Arc64_mmap( struct file* filp, struct vm_area_struct* vma )
 			dResult = -EAGAIN;
 		}
 
-		if ( !IS_ERR_VALUE( &dResult ) )
+		if ( !IS_ERR_VALUE( ( unsigned long )dResult ) )
 		{
 			ArcPrintf( "MMAP - Mapping memory for device %s\n", pDevExt->szName );
 
@@ -1471,7 +1470,7 @@ static int Arc64_mapCommonBuffer( ArcDevExt* pDevExt, struct vm_area_struct* vma
 		dResult = -ENODEV;
 	}
 
-	if ( !IS_ERR_VALUE( &dResult ) )
+	if ( !IS_ERR_VALUE( ( unsigned long )dResult ) )
 	{
 		if ( ( vma->vm_end - vma->vm_start ) > g_ulSize )
 		{
@@ -1484,7 +1483,7 @@ static int Arc64_mapCommonBuffer( ArcDevExt* pDevExt, struct vm_area_struct* vma
 		}
 	}
 
-	if ( !IS_ERR_VALUE( &dResult ) )
+	if ( !IS_ERR_VALUE( ( unsigned long )dResult ) )
 	{
 		/*  Save the image buffer physical address and size
 		  +---------------------------------------------------------------------+ */
@@ -1522,7 +1521,7 @@ static int Arc64_mapCommonBuffer( ArcDevExt* pDevExt, struct vm_area_struct* vma
 								   ( vma->vm_end - vma->vm_start ),
 								   vma->vm_page_prot );
 
-		if ( IS_ERR_VALUE( &dResult ) )
+		if ( IS_ERR_VALUE( ( unsigned long )dResult ) )
 		{
 			ArcPrintf( "MMAP - Remap page range failed.\n" );
 		}
@@ -1575,7 +1574,7 @@ static int Arc64_mapCommonBuffer( ArcDevExt* pDevExt, struct vm_area_struct* vma
 
 	/*  If there was a failure, set imageBufferPhysAddr to zero as a flag
 	  +-----------------------------------------------------------------------+ */
-	if ( IS_ERR_VALUE( &dResult ) )
+	if ( IS_ERR_VALUE( ( unsigned long )dResult ) )
 	{
 		pDevExt->ulCommonBufferPA	= 0;
 		pDevExt->ulCommonBufferVA	= 0;
@@ -1600,7 +1599,7 @@ static int __init Arc64_mapBars( ArcDevExt *pDevExt, struct pci_dev *dev )
 	int dResult	= 0;
 	int i		= 0;
 
-	for ( i=0; i<BAR_COUNT; i++ )
+	for ( i = 0; i < BAR_COUNT; i++ )
 	{
 		/* Get the BAR start address
 		  +----------------------------------------------------+ */
@@ -1659,7 +1658,7 @@ static void Arc64_unMapBars( ArcDevExt *pDevExt, struct pci_dev *dev )
 
 	ArcPrintf( "UNMAP BARS - Unmapping ALL PCI BARs!\n" );
 
-	for ( i=0; i<BAR_COUNT; i++ )
+	for ( i = 0; i < BAR_COUNT; i++ )
 	{
 		if ( pDevExt->pBar[ i ] )
 		{
@@ -1793,13 +1792,13 @@ static int Arc64_setBufferAddresses( ArcDevExt* pDevExt )
 		dResult = -ENXIO;
 	}
 
-	if ( !IS_ERR_VALUE( &dResult ) )
+	if ( !IS_ERR_VALUE( ( unsigned long )dResult ) )
 	{
 		dResult = Arc64_writeHCVR( pDevExt, WRITE_PCI_ADDRESS );
 
  		/* Check the reply
 		  +-----------------------------------------------+ */
-		if ( !IS_ERR_VALUE( &dResult ) )
+		if ( !IS_ERR_VALUE( ( unsigned long )dResult ) )
 		{
 			dReply = Arc64_checkReplyFlags( pDevExt );
 
@@ -2050,8 +2049,7 @@ static uint32_t Arc64_waitForCondition( ArcDevExt* pDevExt, int dCondition2Wait4
 		  +------------------------------------------------+ */
 		do_gettimeofday( &tNow );
 
-		u32ElapsedTime = ( tNow.tv_sec  - tInitial.tv_sec ) * 1000000L +
-						 ( tNow.tv_usec - tInitial.tv_usec );
+		u32ElapsedTime = ( tNow.tv_sec  - tInitial.tv_sec ) * 1000000L + ( tNow.tv_usec - tInitial.tv_usec );
 
 		if ( u32ElapsedTime < BUSY_MAX_WAIT )
 		{
@@ -2269,7 +2267,7 @@ static int Arc64_writeHCVR( ArcDevExt* pDevExt, uint32_t u32RegVal )
 	int			i				= 0;
 	int			dStatus			= -EIO;
 
-	for ( i=0; i<100; i++ )
+	for ( i = 0; i < 100; i++ )
 	{
 		u32CurrentValue = Arc64_readRegister_32( pDevExt->pBar[ 0 ] + HCVR );
 

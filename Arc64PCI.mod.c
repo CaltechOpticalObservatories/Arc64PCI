@@ -28,26 +28,26 @@ __attribute__((section("__versions"))) = {
 	{ 0x21e01071, "class_destroy" },
 	{ 0x64c97ae, "device_destroy" },
 	{ 0xe85eaefe, "__pci_register_driver" },
-	{ 0xe42dbab4, "__class_create" },
 	{ 0xe3ec2f2b, "alloc_chrdev_region" },
+	{ 0xe42dbab4, "__class_create" },
 	{ 0xb840d099, "try_module_get" },
 	{ 0x3fca107d, "module_put" },
 	{ 0x91715312, "sprintf" },
 	{ 0x6091b333, "unregister_chrdev_region" },
 	{ 0x58d9cd11, "cdev_add" },
 	{ 0x71a3afd4, "cdev_init" },
-	{ 0xb33ee6e2, "device_create" },
-	{ 0xd6b8e852, "request_threaded_irq" },
 	{ 0xdb9a89d2, "pci_iomap" },
 	{ 0x9c656956, "pci_request_regions" },
+	{ 0xb33ee6e2, "device_create" },
+	{ 0xd6b8e852, "request_threaded_irq" },
 	{ 0x982a3dc2, "pci_enable_device" },
 	{ 0xe1537255, "__list_del_entry_valid" },
 	{ 0x68f31cbd, "__list_add_valid" },
 	{ 0xf86c8d03, "kmem_cache_alloc_trace" },
 	{ 0x8200293d, "kmalloc_caches" },
 	{ 0xfc3b81ee, "alloc_pages_current" },
-	{ 0x58388972, "pv_lock_ops" },
 	{ 0x6a86bc1, "iowrite16" },
+	{ 0x58388972, "pv_lock_ops" },
 	{ 0x72e90816, "remap_pfn_range" },
 	{ 0x15244c9d, "boot_cpu_data" },
 	{ 0xdbf17652, "_raw_spin_lock" },
@@ -91,5 +91,5 @@ __attribute__((section(".modinfo"))) =
 
 MODULE_ALIAS("pci:v00001057d00001801sv*sd*bc*sc*i*");
 
-MODULE_INFO(srcversion, "311DF25CC021795235B84BF");
+MODULE_INFO(srcversion, "CCB15822D42A5FF39AC2DC9");
 MODULE_INFO(rhelversion, "8.2");
