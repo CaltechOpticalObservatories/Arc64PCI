@@ -91,5 +91,5 @@ __attribute__((section(".modinfo"))) =
 
 MODULE_ALIAS("pci:v00001057d00001801sv*sd*bc*sc*i*");
 
-MODULE_INFO(srcversion, "4B55DE0CCC6847711C91EBE");
+MODULE_INFO(srcversion, "311DF25CC021795235B84BF");
 MODULE_INFO(rhelversion, "8.2");

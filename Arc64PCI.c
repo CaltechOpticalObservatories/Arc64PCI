@@ -50,7 +50,7 @@
 |       Module command line parameters                                         |
 +------------------------------------------------------------------------------+
 */
-static ulong g_ulSize = ( 2 * 4200 * 4400 );
+static ulong g_ulSize = 5 * ( 2 * 4400 * 2200 );
 module_param( g_ulSize, ulong, S_IRUGO );
 
 
@@ -216,7 +216,8 @@ static int __init Arc64_init( void )
 #endif
 
 	ArcPrintf( "INIT - +------------------------------------+\n" );
-	ArcPrintf( "INIT - |     ARC-63/64 - Initialization     |\n" );
+	ArcPrintf( "INIT - |     ARC-64 - Initialization        |\n" );
+	ArcPrintf( "INIT - |     v 3.6                          |\n" );
 	ArcPrintf( "INIT - +------------------------------------+\n" );
 
 	if ( !IS_ERR_VALUE( &dResult ) )
@@ -292,7 +293,7 @@ static void __exit Arc64_exit( void )
 	int dDev = 0;
 
 	ArcPrintf( "EXIT - +------------------------------------+\n" );
-	ArcPrintf( "EXIT - |      ARC-63/64 - EXIT CALLED       |\n" );
+	ArcPrintf( "EXIT - |      ARC-64 - EXIT CALLED          |\n" );
 	ArcPrintf( "EXIT - +------------------------------------+\n" );
 
 	/* Free the dynamically allocated character device node
@@ -366,7 +367,7 @@ static int Arc64_probe( struct pci_dev* dev, const struct pci_device_id* id )
 
 	if ( !IS_ERR_VALUE( &dResult ) )
 	{
-		ArcPrintf( "PROBE - Looking for ARC-64 ( Gen IV ) boards ...\n" );
+		ArcPrintf( "PROBE - Looking for ARC-64 ( Gen III ) boards ...\n" );
 
 		/*  Allocate memory for per-board book keeping
 		   +----------------------------------------------------+ */
@@ -2727,7 +2728,7 @@ static void Arc64_bigBufFree( struct page* start, ulong size )
 
 
 MODULE_AUTHOR( "Scott Streit" );
-MODULE_DESCRIPTION( "ARC-63/64 PCI Interface Driver" );
+MODULE_DESCRIPTION( "ARC-64 PCI Interface Driver v3.6" );
 MODULE_SUPPORTED_DEVICE( DEVICE_NAME );
 
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,11)
