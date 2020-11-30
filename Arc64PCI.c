@@ -217,7 +217,7 @@ static int __init Arc64_init( void )
 
 	ArcPrintf( "INIT - +------------------------------------+\n" );
 	ArcPrintf( "INIT - |     ARC-64 - Initialization        |\n" );
-	ArcPrintf( "INIT - |     v 3.6                          |\n" );
+	ArcPrintf( "INIT - |     v 3.6.1                        |\n" );
 	ArcPrintf( "INIT - +------------------------------------+\n" );
 
 	if ( !IS_ERR_VALUE( ( unsigned long )dResult ) )
@@ -710,7 +710,8 @@ static int Arc64_open( struct inode* inode, struct file* filp )
 	//  //
 	//  //                 NOTE: This seems to cause problems on my system, so only use it if you need it.
 	//	//
-	//	pci_set_master( pDevExt->pPCIDev );
+	//	//	This is needed for NGPS. --DH, 11/30/2020
+	pci_set_master( pDevExt->pPCIDev );
 
 	return dResult;
 }

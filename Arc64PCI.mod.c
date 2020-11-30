@@ -30,6 +30,7 @@ __attribute__((section("__versions"))) = {
 	{ 0xe85eaefe, "__pci_register_driver" },
 	{ 0xe3ec2f2b, "alloc_chrdev_region" },
 	{ 0xe42dbab4, "__class_create" },
+	{ 0xe724f530, "pci_set_master" },
 	{ 0xb840d099, "try_module_get" },
 	{ 0x3fca107d, "module_put" },
 	{ 0x91715312, "sprintf" },
@@ -91,5 +92,5 @@ __attribute__((section(".modinfo"))) =
 
 MODULE_ALIAS("pci:v00001057d00001801sv*sd*bc*sc*i*");
 
-MODULE_INFO(srcversion, "CCB15822D42A5FF39AC2DC9");
+MODULE_INFO(srcversion, "0812E5A82A7DAC59ECA3BCC");
 MODULE_INFO(rhelversion, "8.2");
