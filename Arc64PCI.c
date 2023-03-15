@@ -2062,7 +2062,7 @@ static uint32_t Arc64_waitForCondition( ArcDevExt* pDevExt, int dCondition2Wait4
 		{
 			/* Sleep delay
 			  +--------------------------------------------+ */
-			current->state = TASK_UNINTERRUPTIBLE;
+			current->__state = TASK_UNINTERRUPTIBLE;
 
 			schedule_timeout( u32SleepDelay );
 		}
